@@ -1,0 +1,35 @@
+# https://github.com/methylDragon/opencv-python-reference/blob/master/02%20OpenCV%20Feature%20Detection%20and%20Description.md
+# Source: https://docs.opencv.org/3.4.4/dc/dc3/tutorial_py_matcher.html
+
+import cv2 as cv
+
+img1 = cv.imread('box.png')  # queryImage
+img2 = cv.imread('box_in_scene.png')  # trainImage
+
+# Initiate ORB detector
+orb = cv.ORB_create()
+
+# find the keypoints and descriptors with ORB
+kp1, des1 = orb.detectAndCompute(img1, None)
+kp2, des2 = orb.detectAndCompute(img2, None)
+
+# create BFMatcher object
+# Recommended for ORB default configuration
+# crossCheck should be False for knnMatch
+bf = cv.BFMatcher(cv.NORM_HAMMING, crossCheck=False)
+
+# Match descriptors.
+matches = bf.knnMatch(des1, des2, k=2)
+
+# Flags:
+# cv.DRAW_MATCHES_FLAGS_DEFAULT
+# cv.DRAW_MATCHES_FLAGS_DRAW_OVER_OUTIMG
+# cv.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS
+# cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS
+img3 = cv.drawMatchesKnn(img1, kp1, img2, kp2, matches[:10], None, flags=cv.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS)
+
+# Draw matches
+cv.namedWindow('ORB BF Matcher', cv.WINDOW_NORMAL)
+cv.imshow('ORB BF Matcher', img3)
+
+cv.waitKey(0)
