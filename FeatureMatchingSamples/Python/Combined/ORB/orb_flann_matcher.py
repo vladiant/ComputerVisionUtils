@@ -1,6 +1,7 @@
 # https://github.com/methylDragon/opencv-python-reference/blob/master/02%20OpenCV%20Feature%20Detection%20and%20Description.md
 # Source: https://docs.opencv.org/3.4.4/dc/dc3/tutorial_py_matcher.html
 
+import numpy as np
 import cv2 as cv
 
 img1 = cv.imread('box.png')  # queryImage
@@ -38,5 +39,33 @@ img3 = cv.drawMatches(img1, kp1, img2, kp2, matches, None, flags=cv.DRAW_MATCHES
 # Draw matches
 cv.namedWindow('ORB BF Matcher', cv.WINDOW_NORMAL)
 cv.imshow('ORB BF Matcher', img3)
+
+# Calculate homography
+# Consider point filtering
+obj = []
+scene = []
+for match in matches:
+    obj.append(kp1[match.queryIdx].pt)
+    scene.append(kp2[match.trainIdx].pt)
+
+# Calculate homography: Inliers and outliers
+# RANSAC, LMEDS, RHO
+H, _ = cv.findHomography(np.array(obj), np.array(scene), cv.RANSAC)
+
+if H is not None:
+    # Frame of the object image
+    obj_points = np.array([[0, 0], [img1.shape[1], 0], [img1.shape[1], img1.shape[0]], [0, img1.shape[0]]],
+                          dtype=np.float)
+
+    # Check the sanity of the transformation
+    warped_points = cv.perspectiveTransform(np.array([obj_points]), H)
+
+    warped_image = np.copy(img2)
+    cv.drawContours(warped_image, np.array([warped_points]).astype(np.int32), 0, (0, 0, 255))
+
+    cv.namedWindow('Warped Object', cv.WINDOW_NORMAL)
+    cv.imshow('Warped Object', warped_image)
+else:
+    print("Error calculating perspective transformation")
 
 cv.waitKey(0)
