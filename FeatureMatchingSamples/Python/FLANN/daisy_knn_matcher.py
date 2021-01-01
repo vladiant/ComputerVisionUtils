@@ -48,6 +48,7 @@ cv.imshow('BRISK BF Matcher', img3)
 obj = []
 scene = []
 for match in matches:
+    # Consider testing match[0].distance to match[1].distance
     obj.append(kp1[match[0].queryIdx].pt)
     scene.append(kp2[match[0].trainIdx].pt)
 

@@ -51,6 +51,9 @@ cv.imshow('BRISK BF Matcher', img3)
 obj = []
 scene = []
 for match in matches:
+    # Ratio test as per Lowe's SIFT paper
+    if match[0].distance >= 0.7*match[1].distance:
+        continue
     obj.append(kp1[match[0].queryIdx].pt)
     scene.append(kp2[match[0].trainIdx].pt)
 
