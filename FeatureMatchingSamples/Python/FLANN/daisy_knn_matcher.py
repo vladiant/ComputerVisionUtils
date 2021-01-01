@@ -13,18 +13,15 @@ detector = cv.BRISK_create()
 kp1 = detector.detect(img1, None)
 kp2 = detector.detect(img2, None)
 
-# Initiate BriefDescriptorExtractor
-descriptor = cv.xfeatures2d.BriefDescriptorExtractor_create()
+# Initiate DAISY
+descriptor = cv.xfeatures2d.DAISY_create()
 
-# find the descriptors with BriefDescriptorExtractor
+# find the descriptors with DAISY
 _, des1 = descriptor.compute(img1, kp1)
 _, des2 = descriptor.compute(img2, kp2)
 
-FLANN_INDEX_LSH = 6
-index_params = dict(algorithm=FLANN_INDEX_LSH,
-                    table_number=6,  # 12
-                    key_size=12,  # 20
-                    multi_probe_level=1)  # 2
+FLANN_INDEX_KDTREE = 1
+index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
 
 # Then set number of searches. Higher is better, but takes longer
 search_params = dict(checks=100)
@@ -33,14 +30,14 @@ search_params = dict(checks=100)
 flann = cv.FlannBasedMatcher(index_params, search_params)
 
 # Find matches
-matches = flann.match(des1, des2)
+matches = flann.knnMatch(des1, des2, k=2)
 
 # Flags:
 # cv.DRAW_MATCHES_FLAGS_DEFAULT
 # cv.DRAW_MATCHES_FLAGS_DRAW_OVER_OUTIMG
 # cv.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS
 # cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS
-img3 = cv.drawMatches(img1, kp1, img2, kp2, matches, None, flags=cv.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS)
+img3 = cv.drawMatchesKnn(img1, kp1, img2, kp2, matches[:10], None, flags=cv.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS)
 
 # Draw matches
 cv.namedWindow('BRISK BF Matcher', cv.WINDOW_NORMAL)
@@ -51,8 +48,8 @@ cv.imshow('BRISK BF Matcher', img3)
 obj = []
 scene = []
 for match in matches:
-    obj.append(kp1[match.queryIdx].pt)
-    scene.append(kp2[match.trainIdx].pt)
+    obj.append(kp1[match[0].queryIdx].pt)
+    scene.append(kp2[match[0].trainIdx].pt)
 
 # Calculate homography: Inliers and outliers
 # RANSAC, LMEDS, RHO
