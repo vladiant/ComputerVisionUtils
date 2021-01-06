@@ -13,18 +13,15 @@ detector = cv.BRISK_create()
 kp1 = detector.detect(img1, None)
 kp2 = detector.detect(img2, None)
 
-# Initiate BoostDesc
-descriptor = cv.xfeatures2d.BoostDesc_create()
+# Initiate VGG
+descriptor = cv.xfeatures2d.VGG_create()
 
-# find the descriptors with BoostDesc
+# find the descriptors with VGG
 _, des1 = descriptor.compute(img1, kp1)
 _, des2 = descriptor.compute(img2, kp2)
 
-FLANN_INDEX_LSH = 6
-index_params = dict(algorithm=FLANN_INDEX_LSH,
-                    table_number=6,  # 12
-                    key_size=12,  # 20
-                    multi_probe_level=1)  # 2
+FLANN_INDEX_KDTREE = 1
+index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
 
 # Then set number of searches. Higher is better, but takes longer
 search_params = dict(checks=100)
@@ -43,8 +40,8 @@ matches = flann.knnMatch(des1, des2, k=2)
 img3 = cv.drawMatchesKnn(img1, kp1, img2, kp2, matches[:10], None, flags=cv.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS)
 
 # Draw matches
-cv.namedWindow('BRISK BF Matcher', cv.WINDOW_NORMAL)
-cv.imshow('BRISK BF Matcher', img3)
+cv.namedWindow('VGG BF Matcher', cv.WINDOW_NORMAL)
+cv.imshow('VGG BF Matcher', img3)
 
 # Calculate homography
 # Consider point filtering

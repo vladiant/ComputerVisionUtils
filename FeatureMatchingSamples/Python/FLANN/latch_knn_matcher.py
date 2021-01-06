@@ -43,8 +43,8 @@ matches = flann.knnMatch(des1, des2, k=2)
 img3 = cv.drawMatchesKnn(img1, kp1, img2, kp2, matches[:10], None, flags=cv.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS)
 
 # Draw matches
-cv.namedWindow('BRISK BF Matcher', cv.WINDOW_NORMAL)
-cv.imshow('BRISK BF Matcher', img3)
+cv.namedWindow('LATCH BF Matcher', cv.WINDOW_NORMAL)
+cv.imshow('LATCH BF Matcher', img3)
 
 # Calculate homography
 # Consider point filtering
