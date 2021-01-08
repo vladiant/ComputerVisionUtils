@@ -71,17 +71,15 @@ int main(int argc, char* argv[]) {
     cv::Mat des_scene;
     detector->detectAndCompute(scene_image, cv::noArray(), kp_scene, des_scene);
 
-    // Create matcher
-    auto matcher =
-        cv::DescriptorMatcher::create(cv::DescriptorMatcher::BRUTEFORCE);
-    if (!matcher) {
-      std::cout << "Error creating feature matcher\n";
-      return EXIT_FAILURE;
-    }
+    // Create matcher, crossCheck = true
+    cv::BFMatcher matcher(cv::NORM_HAMMING, true);
 
     // Match features
     std::vector<cv::DMatch> matches;
-    matcher->match(des_template, des_scene, matches);
+    matcher.match(des_template, des_scene, matches);
+
+    // Sort them in the order of their distance.
+    std::sort(matches.begin(), matches.end());
 
     // Draw matches
     cv::Mat out_img;
