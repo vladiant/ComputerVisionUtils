@@ -23,9 +23,6 @@ index_params = dict(algorithm=FLANN_INDEX_LSH,
 # Then set number of searches. Higher is better, but takes longer
 search_params = dict(checks=100)
 
-# Then set number of searches. Higher is better, but takes longer
-search_params = dict(checks=100)
-
 # Initialize matches
 flann = cv.FlannBasedMatcher(index_params, search_params)
 
