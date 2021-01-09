@@ -96,7 +96,8 @@ int main(int argc, char* argv[]) {
     // Draw matches
     cv::Mat out_img;
     cv::drawMatches(template_img, kp_template, scene_image, kp_scene, matches,
-                    out_img, cv::Scalar(0, 255, 0), cv::Scalar(0, 255, 0));
+                    out_img, cv::Scalar(0, 255, 0), cv::Scalar(0, 255, 0), {},
+                    cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
     cv::imshow(kWindowName, out_img);
 
     // Calculate homography
