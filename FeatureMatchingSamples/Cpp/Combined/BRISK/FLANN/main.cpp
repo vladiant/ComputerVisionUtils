@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/core.hpp>
@@ -92,6 +93,12 @@ int main(int argc, char* argv[]) {
     // Match features
     std::vector<cv::DMatch> matches;
     matcher.match(des_template, des_scene, matches);
+
+    // Sort them in the order of their distance.
+    std::sort(matches.begin(), matches.end());
+
+    // Use the 10 best features only
+    matches.resize(std::min<int>(10, matches.size()));
 
     // Draw matches
     cv::Mat out_img;
