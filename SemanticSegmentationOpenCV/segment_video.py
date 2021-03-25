@@ -21,20 +21,31 @@ import cv2
 
 # Construct argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-m", "--model", required=True,
-                help="path to deep learning segmentation model")
-ap.add_argument("-c", "--classes", required=True,
-                help="path to .txt file containing class labels")
-ap.add_argument("-v", "--video", required=True,
-                help="path to input video file")
-ap.add_argument("-o", "--output", required=True,
-                help="path to output video file")
-ap.add_argument("-s", "--show", type=int, default=1,
-                help="whether or not to display frame to screen")
-ap.add_argument("-l", "--colors", type=str,
-                help="path to .txt file containing colors for labels")
-ap.add_argument("-w", "--width", type=int, default=500,
-                help="desired width (in pixels) of input image")
+ap.add_argument(
+    "-m", "--model", required=True, help="path to deep learning segmentation model"
+)
+ap.add_argument(
+    "-c", "--classes", required=True, help="path to .txt file containing class labels"
+)
+ap.add_argument("-v", "--video", required=True, help="path to input video file")
+ap.add_argument("-o", "--output", required=True, help="path to output video file")
+ap.add_argument(
+    "-s",
+    "--show",
+    type=int,
+    default=1,
+    help="whether or not to display frame to screen",
+)
+ap.add_argument(
+    "-l", "--colors", type=str, help="path to .txt file containing colors for labels"
+)
+ap.add_argument(
+    "-w",
+    "--width",
+    type=int,
+    default=500,
+    help="desired width (in pixels) of input image",
+)
 args = vars(ap.parse_args())
 
 # Load the class label names
@@ -52,8 +63,7 @@ else:
     # the mask (strating with 'black' for the background /unlabelled
     # regions)
     np.random.seed(42)
-    COLORS = np.random.randint(0, 255, size=(len(CLASSES) - 1, 3),
-                               dtype="uint8")
+    COLORS = np.random.randint(0, 255, size=(len(CLASSES) - 1, 3), dtype="uint8")
     COLORS = np.vstack([[0, 0, 0], COLORS]).astype("uint8")
 
 # Initialize the legend visualization
@@ -63,10 +73,16 @@ legend = np.zeros(((len(CLASSES) * 25) + 25, 300, 3), dtype="uint8")
 for (i, (className, color)) in enumerate(zip(CLASSES, COLORS)):
     # Draw the class name + color on the legend
     color = [int(c) for c in color]
-    cv2.putText(legend, className, (5, (i * 25) + 17),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-    cv2.rectangle(legend, (100, (i * 25)), (300, (i * 25) + 25),
-                  tuple(color), -1)
+    cv2.putText(
+        legend,
+        className,
+        (5, (i * 25) + 17),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.5,
+        (0, 0, 255),
+        2,
+    )
+    cv2.rectangle(legend, (100, (i * 25)), (300, (i * 25) + 25), tuple(color), -1)
 
 # Load serialized model from disk
 print("[INFO] loading model...")
@@ -78,8 +94,9 @@ writer = None
 
 # Try to determine the total number of frames in the video file
 try:
-    prop = cv2.cv.CV_CAP_PROP_FRAME_COUNT if imutils.is_cv2() \
-        else cv2.CAP_PROP_FRAME_COUNT
+    prop = (
+        cv2.cv.CV_CAP_PROP_FRAME_COUNT if imutils.is_cv2() else cv2.CAP_PROP_FRAME_COUNT
+    )
     total = int(vs.get(prop))
     print("[INFO] Total frames in video".format(total))
 
@@ -102,8 +119,9 @@ while True:
     # Construct a blob from the frame and perform a forward
     # pass using the segmentation model
     frame = imutils.resize(frame, width=args["width"])
-    blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (1024, 512), 0,
-                                 swapRB=True, crop=False)
+    blob = cv2.dnn.blobFromImage(
+        frame, 1 / 255.0, (1024, 512), 0, swapRB=True, crop=False
+    )
     net.setInput(blob)
     start = time.time()
     output = net.forward()
@@ -113,7 +131,7 @@ while True:
     # of the mask image via the shape of the output array
     (numClasses, height, width) = output.shape[1:4]
 
-    # Output class ID map will be num_classes x height y width in 
+    # Output class ID map will be num_classes x height y width in
     # size, so we take the argmax to find the class label with the
     # largest probability for each and every (x, y)-cooridnate in the image
     classMap = np.argmax(output[0], axis=0)
@@ -124,10 +142,11 @@ while True:
 
     # Resize the mask and class map such that its dimensions match the
     # original size of the input frame
-    mask = cv2.resize(mask, (frame.shape[1], frame.shape[0]),
-                      interpolation=cv2.INTER_NEAREST)
+    mask = cv2.resize(
+        mask, (frame.shape[1], frame.shape[0]), interpolation=cv2.INTER_NEAREST
+    )
 
-    # Perform a weighted combination of the input image with the mask to 
+    # Perform a weighted combination of the input image with the mask to
     # form an output visualization
     output = ((0.3 * frame) + (0.7 * mask)).astype("uint8")
 
@@ -135,8 +154,9 @@ while True:
     if writer is None:
         # Initialize video writer
         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-        writer = cv2.VideoWriter(args["output"], fourcc, 30,
-                                 (output.shape[1], output.shape[0]), True)
+        writer = cv2.VideoWriter(
+            args["output"], fourcc, 30, (output.shape[1], output.shape[0]), True
+        )
 
         # Information on processing single frame
         if total > 0:

@@ -10,7 +10,11 @@ import numpy as np
 feature_params = dict(maxCorners=500, qualityLevel=0.2, minDistance=2, blockSize=7)
 
 # Parameters for Lucas-Kanade optical flow
-lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TermCriteria_EPS | cv2.TermCriteria_COUNT, 10, 0.03))
+lk_params = dict(
+    winSize=(15, 15),
+    maxLevel=2,
+    criteria=(cv2.TermCriteria_EPS | cv2.TermCriteria_COUNT, 10, 0.03),
+)
 
 # Variable for color to draw optical flow track
 color = (0, 255, 0)
@@ -65,7 +69,9 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Calculates sparse optical flow by Lucas-Kanade method
-    next_features, status, error = cv2.calcOpticalFlowPyrLK(prev_gray, gray, prev_features, None, **lk_params)
+    next_features, status, error = cv2.calcOpticalFlowPyrLK(
+        prev_gray, gray, prev_features, None, **lk_params
+    )
 
     # Select good feature points for previous position
     good_old = prev_features[status == 1]

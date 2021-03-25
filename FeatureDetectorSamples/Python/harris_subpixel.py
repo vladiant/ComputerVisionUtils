@@ -3,18 +3,18 @@
 import numpy as np
 import cv2 as cv
 
-img = cv.imread('Lenna.png')
-cv.namedWindow('Harris Corner Detection Test', cv.WINDOW_NORMAL)
+img = cv.imread("Lenna.png")
+cv.namedWindow("Harris Corner Detection Test", cv.WINDOW_NORMAL)
 
 
 def f(x=None):
     return
 
 
-cv.createTrackbar('Harris Window Size', 'Harris Corner Detection Test', 5, 25, f)
-cv.createTrackbar('Harris Parameter', 'Harris Corner Detection Test', 1, 100, f)
-cv.createTrackbar('Sobel Aperture', 'Harris Corner Detection Test', 1, 14, f)
-cv.createTrackbar('Detection Threshold', 'Harris Corner Detection Test', 1, 100, f)
+cv.createTrackbar("Harris Window Size", "Harris Corner Detection Test", 5, 25, f)
+cv.createTrackbar("Harris Parameter", "Harris Corner Detection Test", 1, 100, f)
+cv.createTrackbar("Sobel Aperture", "Harris Corner Detection Test", 1, 14, f)
+cv.createTrackbar("Detection Threshold", "Harris Corner Detection Test", 1, 100, f)
 
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 gray = np.float32(gray)
@@ -24,10 +24,14 @@ img_bak = img
 while True:
     img = img_bak.copy()
 
-    window_size = cv.getTrackbarPos('Harris Window Size', 'Harris Corner Detection Test')
-    harris_parameter = cv.getTrackbarPos('Harris Parameter', 'Harris Corner Detection Test')
-    sobel_aperture = cv.getTrackbarPos('Sobel Aperture', 'Harris Corner Detection Test')
-    threshold = cv.getTrackbarPos('Detection Threshold', 'Harris Corner Detection Test')
+    window_size = cv.getTrackbarPos(
+        "Harris Window Size", "Harris Corner Detection Test"
+    )
+    harris_parameter = cv.getTrackbarPos(
+        "Harris Parameter", "Harris Corner Detection Test"
+    )
+    sobel_aperture = cv.getTrackbarPos("Sobel Aperture", "Harris Corner Detection Test")
+    threshold = cv.getTrackbarPos("Detection Threshold", "Harris Corner Detection Test")
 
     sobel_aperture = sobel_aperture * 2 + 1
 
@@ -62,7 +66,7 @@ while True:
     except:
         pass
 
-    cv.imshow('Harris Corner Detection Test', np.hstack((img, dst_show)))
+    cv.imshow("Harris Corner Detection Test", np.hstack((img, dst_show)))
 
     if cv.waitKey(10) & 0xFF == 27:
         break

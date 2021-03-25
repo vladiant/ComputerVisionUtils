@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 
-image = cv2.imread('segmentation_and_contours.png')
+image = cv2.imread("segmentation_and_contours.png")
 # cv2.namedWindow("Input Image", cv2.WINDOW_NORMAL)
 cv2.imshow("Input Image", image)
 cv2.waitKey(0)

@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # Image loaded as grayscale three channel
-image = cv2.imread('blob_discrimination.png', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread("blob_discrimination.png", cv2.IMREAD_GRAYSCALE)
 # cv2.namedWindow("Input Image", cv2.WINDOW_NORMAL)
 cv2.imshow("Input Image", image)
 cv2.waitKey(0)
@@ -17,7 +17,9 @@ keypoints = detector.detect(image)
 
 # Draw detected blobs as red circles
 blank = np.zeros((1, 1))
-blobs = cv2.drawKeypoints(image, keypoints, blank, (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+blobs = cv2.drawKeypoints(
+    image, keypoints, blank, (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS
+)
 
 # Print blobs on image
 number_of_blobs = len(keypoints)
@@ -55,7 +57,9 @@ keypoints = detector.detect(image)
 
 # Draw detected blobs as red circles
 blank = np.zeros((1, 1))
-blobs = cv2.drawKeypoints(image, keypoints, blank, (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+blobs = cv2.drawKeypoints(
+    image, keypoints, blank, (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS
+)
 
 # Print blobs on image
 number_of_blobs = len(keypoints)

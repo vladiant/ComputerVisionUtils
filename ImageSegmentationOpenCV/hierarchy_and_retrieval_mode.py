@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 
-image = cv2.imread('hierarchy_and_retrieval_mode.png')
+image = cv2.imread("hierarchy_and_retrieval_mode.png")
 # cv2.namedWindow("Input Image", cv2.WINDOW_NORMAL)
 cv2.imshow("Input Image", image)
 cv2.waitKey(0)

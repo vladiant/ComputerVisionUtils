@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # Load image
-image = cv2.imread('convex_hull.png')
+image = cv2.imread("convex_hull.png")
 
 # Grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -17,7 +17,9 @@ cv2.waitKey(0)
 ret, thresh = cv2.threshold(gray, 176, 255, 0)
 
 # Find contours
-contours, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+contours, hierarchy = cv2.findContours(
+    thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE
+)
 
 # Sort the contours and remove the largest frame contour
 n = len(contours) - 1

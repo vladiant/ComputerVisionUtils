@@ -37,7 +37,9 @@ cv2.namedWindow("Frame", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Dense optical flow", cv2.WINDOW_NORMAL)
 
 # Parameters for Farnerback optical flow
-feature_params = dict(pyrScale=0.5, numLevels=3, winSize=15, numIters=3, polyN=5, polySigma=1.2, flags=0)
+feature_params = dict(
+    pyrScale=0.5, numLevels=3, winSize=15, numIters=3, polyN=5, polySigma=1.2, flags=0
+)
 
 # Create Farnerback optical flow
 optical_flow = cv2.FarnebackOpticalFlow_create(**feature_params)

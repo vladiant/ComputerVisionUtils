@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # Load the image and keep a copy
-image = cv2.imread('approx_contours_and_convex_hull.png')
+image = cv2.imread("approx_contours_and_convex_hull.png")
 orig_img = image.copy()
 
 # cv2.namedWindow("Input Image", cv2.WINDOW_NORMAL)
@@ -15,7 +15,9 @@ cv2.waitKey(0)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 ret, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
 
-contours, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+contours, hierarchy = cv2.findContours(
+    thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE
+)
 
 # Iterate through each contour and compute bounding rectangle
 for c in contours:

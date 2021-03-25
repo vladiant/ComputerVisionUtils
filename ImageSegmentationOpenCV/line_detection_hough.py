@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 
-image = cv2.imread('line_detection.png')
+image = cv2.imread("line_detection.png")
 # cv2.namedWindow("Input Image", cv2.WINDOW_NORMAL)
 cv2.imshow("Input Image", image)
 cv2.waitKey(0)
@@ -22,7 +22,10 @@ lines = cv2.HoughLines(edges, 1, np.pi / 180, 150)
 
 # Iterate through each line to convert if for printing
 for i in range(0, len(lines)):
-    for rho, theta, in lines[i]:
+    for (
+        rho,
+        theta,
+    ) in lines[i]:
         a = np.cos(theta)
         b = np.sin(theta)
         x0 = a * rho

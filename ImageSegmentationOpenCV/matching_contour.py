@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # Load shape template
-template_image = cv2.imread('matching_contour_template.png')
+template_image = cv2.imread("matching_contour_template.png")
 template = cv2.cvtColor(template_image, cv2.COLOR_BGR2GRAY)
 
 # cv2.namedWindow("Template", cv2.WINDOW_NORMAL)
@@ -12,7 +12,7 @@ cv2.imshow("Template", template)
 cv2.waitKey(0)
 
 # Load the image to match the template on
-target = cv2.imread('matching_contour.png')
+target = cv2.imread("matching_contour.png")
 gray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
 
 # Threshold the images
